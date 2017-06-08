@@ -22,7 +22,7 @@ sparseFLMM(curve_info, use_RI = FALSE, use_simple = FALSE,
 }
 \arguments{
 \item{curve_info}{data table in which each row represents a single observation
-point. \code{curve_info} need to contain the following columns:
+point. \code{curve_info} needs to contain the following columns:
 \itemize{
 \item \code{y_vec} (numeric): the response values for each observation point
 \item \code{t}  (numeric): the observations point locations, i.e. \eqn{t_{ij}}
@@ -67,9 +67,9 @@ tested yet.}
 and the functional random effects are evaluated. NOTE: the length of the grid can be important for computation time (approx. quadratic influence).
 Defaults to \code{d_grid = 100}.}
 
-\item{min_grid}{minimum value of eqidistant grid (should approx. correspond to minimum value of time interval). Defaults to \code{min_grid = 0}.}
+\item{min_grid}{minimum value of equidistant grid (should approx. correspond to minimum value of time interval). Defaults to \code{min_grid = 0}.}
 
-\item{max_grid}{maximum value of eqidistant grid (should approx. correspond to maximum value of time interval). Defaults to \code{max_grid = 1}.}
+\item{max_grid}{maximum value of equidistant grid (should approx. correspond to maximum value of time interval). Defaults to \code{max_grid = 1}.}
 
 \item{my_grid}{optional evaluation grid, which can be specified and used instead of \code{d_grid}, \code{min_grid}, \code{max_grid}.
 NOTE: the grid should be equidistant.}
@@ -101,7 +101,7 @@ Interactions are possible for dummy-coded covariates that act as varying coeffic
 
 \item{which_interaction}{symmetric matrix that specifies which interactions should be considered in case \code{covariate = TRUE} and \code{interaction = TRUE}.
 Entry \code{which_interaction}[k, l] specifies that the interaction between \code{covariate.k} and \code{covariate.l} is modeled (example below).
-NOTE: entries are reduntant, \code{which_interaction}[l, k] should be set to the
+NOTE: entries are redundant, \code{which_interaction}[l, k] should be set to the
 same as \code{which_interaction}[k, l] (symmetric). Defaults to \code{which_interaction = matrix(NA)} which should be specified when \code{interaction = FALSE}.}
 
 \item{save_model_mean}{\code{TRUE} to give out \code{gam/bam} object (attention: can be large!), defaults to \code{FALSE}.}
@@ -152,7 +152,7 @@ see \code{\link{bam}} for more details. Defaults to \code{FALSE}.}
 \item{para_estim_cov}{\code{TRUE} to parallelize auto-covariance estimation (only possible using \code{bam}), defaults to \code{FALSE}.}
 
 \item{para_estim_cov_nc}{number of cores (if \code{use_discrete_cov = FALSE}) or number of threads (if \code{use_discrete_cov = TRUE})
-for parallelization of auto-covariance estimation (only possible using \code{bam}, only active if \code{para_estim_cov = TRUE}). 
+for parallelization of auto-covariance estimation (only possible using \code{bam}, only active if \code{para_estim_cov = TRUE}).
 Defaults to 0.}
 
 \item{var_level}{pre-specified level of explained variance used for the choice of the number of the functional principal
@@ -192,7 +192,7 @@ see \code{\link{bam}} for more details. Defaults to \code{FALSE}.}
 
 \item{para_estim_famm_nc}{number of cores (if \code{use_discrete_famm = FALSE}) or number of
 threads (if \code{use_discrete_famm = TRUE})
-for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}). 
+for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}).
 Defaults to 0.}
 }
 \value{
@@ -259,7 +259,7 @@ The original identification numbers are returned in the list \code{results}:
 Estimation of functional linear mixed models (FLMMs) for irregularly or sparsely
 sampled data based on functional principal component analysis (FPCA).
 The implemented models are special cases of the general FLMM
-\deqn{Y_i(t_{ij}) = \mu(t_{ij},x_i) + z_i^T U(t_{ij}) + \epsilon_i(t_{ij}), i = 1,...,n, t_{ij} = 1,...,D_i,}
+\deqn{Y_i(t_{ij}) = \mu(t_{ij},x_i) + z_i^T U(t_{ij}) + \epsilon_i(t_{ij}), i = 1,...,n, j = 1,...,D_i,}
 with \eqn{Y_i(t_{ij})} the value of the response of curve \eqn{i} at observation point
 \eqn{t_{ij}}, \eqn{\mu(t_{ij},x_i)} is a mean function, which may depend on covariates
 \eqn{x_i = (x_{i1},\ldots,x_{ip})^T}. \eqn{z_i} is a covariate vector,
@@ -339,6 +339,7 @@ correspond to the smooth error. For this special case, arguments
 \code{use_RI} and \code{use_simple} are both set to \code{TRUE}.}
 }
 \examples{
+\dontrun{
 # subset of acoustic data (very small subset, no meaningful results can be expected and
 # FAMM estimation does not work for this subset example. For FAMM estimation, see below.)
 data("acoustic_subset")
@@ -363,7 +364,7 @@ acoustic_results <- sparseFLMM(curve_info = acoustic_subset, use_RI = FALSE, use
               bs_int_famm = list(bs = "ps", k = 8, m = c(2, 3)),
               bs_y_famm = list(bs = "ps", k = 8, m = c(2, 3)),
               save_model_famm = FALSE, use_discrete_famm = FALSE,
-              para_estim_famm = FALSE, para_estim_famm_nc = 0)
+              para_estim_famm = FALSE, para_estim_famm_nc = 0)}
 
 \dontrun{
 # whole data set with estimation in the FAMM framework
@@ -392,9 +393,6 @@ acoustic_results <- sparseFLMM(curve_info = acoustic, use_RI = FALSE, use_simple
               para_estim_famm = TRUE, para_estim_famm_nc = 5)}
 
 }
-\author{
-Jona Cederbaum
-}
 \references{
 Cederbaum, Pouplier, Hoole, Greven (2016): Functional Linear Mixed Models
 for Irregularly or Sparsely Sampled Data. Statistical Modelling, 16(1), 67-88.
@@ -407,7 +405,13 @@ Functional Additive Mixed Models, Journal of Computational and Graphical Statist
 }
 \seealso{
 Note that \code{\link{sparseFLMM}} calls \code{\link[mgcv]{bam}} or \code{\link[mgcv]{gam}} directly.
+
+For functional linear mixed models with complex correlation structures
+for data sampled on equal grids based on functional principal component analysis,
+see function \code{denseFLMM} in package \code{denseFLMM}.
+}
+\author{
+Jona Cederbaum
 }
 \keyword{FPCA}
 \keyword{models,}
-

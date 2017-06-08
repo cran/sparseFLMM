@@ -1,8 +1,8 @@
-d165bd9e5e6596e47630c97a4a46fda0 *DESCRIPTION
+0ab5278b10e796795ed5f72b89073667 *DESCRIPTION
 3ee9371179057e98d0d24620a4491ad0 *NAMESPACE
-009a948efac91da8668817721c7bc660 *R/call_all_functions.R
+fb2c9a2a568fe3161df9e441f4364e83 *R/call_all_functions.R
 aa1c75d9664ea625df1e2ff358825ac7 *R/cov_estimation_tri.R
-dc888305a25cb1b22e448ec12a7feafd *R/cov_estimation_tri_constr.R
+e351fd027b102fb01cf759dd4017412e *R/cov_estimation_tri_constr.R
 e1f8d9536e2bf765fb127a7dd5d871bf *R/cov_estimation_whole.R
 8a4b69227208e32027413d263bf969ad *R/fpc_estimation.R
 24e1df4c58a982f08ca24f5916736be5 *R/fpc_famm_estimation.R
@@ -13,9 +13,9 @@ ec34a1e18dc1188af805f2b213f8d6a0 *R/tri_constraint_constructor.R
 07a2221944837217b3912a55441a8e34 *R/zzz.R
 03dffd60ad17a51df631760ebf45b64f *data/acoustic.RData
 0d53420980745cff6521d1fcfe556fa3 *data/acoustic_subset.RData
-28b8878488a9a1f0363db30b6e42d542 *man/Predict.matrix.symm.smooth.Rd
-6e9e85cfc537d9836de33c4ea2bb75c2 *man/acoustic.Rd
-7bc4a1e8808ab5408fb85277bde6afe2 *man/acoustic_subset.Rd
-7e17d16c23f42ebc6ed6908420abfb2a *man/make_summation_matrix.Rd
-f45270217d7599ec63289b9e642ffad8 *man/smooth.construct.symm.smooth.spec.Rd
-adb1ad34baf58e205352c88b74c1cdf8 *man/sparseFLMM.Rd
+2027799320db93d4ae3488c85e89cab5 *man/Predict.matrix.symm.smooth.Rd
+1689a5c670fa8ba87e00474e8f4dbd72 *man/acoustic.Rd
+6f9501077d51f9b1fc45e2c616a04f73 *man/acoustic_subset.Rd
+2ed50038d5cf7f01ba3a66e63f129b42 *man/make_summation_matrix.Rd
+b0fba4bb4c0f4b627762382396fb6b6c *man/smooth.construct.symm.smooth.spec.Rd
+97f6c56bcff39ae8f046ffe94510b8df *man/sparseFLMM.Rd

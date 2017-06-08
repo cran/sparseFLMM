@@ -49,4 +49,3 @@ Cederbaum, Pouplier, Hoole, Greven (2016): Functional Linear Mixed Models
 for Irregularly or Sparsely Sampled Data. Statistical Modelling, 16(1), 67-88.
 }
 \keyword{datasets}
-

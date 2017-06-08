@@ -3,7 +3,7 @@
 #' Estimation of functional linear mixed models (FLMMs) for irregularly or sparsely
 #' sampled data based on functional principal component analysis (FPCA).
 #' The implemented models are special cases of the general FLMM
-#' \deqn{Y_i(t_{ij}) = \mu(t_{ij},x_i) + z_i^T U(t_{ij}) + \epsilon_i(t_{ij}), i = 1,...,n, t_{ij} = 1,...,D_i,}
+#' \deqn{Y_i(t_{ij}) = \mu(t_{ij},x_i) + z_i^T U(t_{ij}) + \epsilon_i(t_{ij}), i = 1,...,n, j = 1,...,D_i,}
 #' with \eqn{Y_i(t_{ij})} the value of the response of curve \eqn{i} at observation point
 #' \eqn{t_{ij}}, \eqn{\mu(t_{ij},x_i)} is a mean function, which may depend on covariates
 #' \eqn{x_i = (x_{i1},\ldots,x_{ip})^T}. \eqn{z_i} is a covariate vector,
@@ -21,7 +21,7 @@
 #' to a smooth curve-specific error
 #' \item a model for correlated functional data with two crossed
 #' fRIs for two grouping variables in addition to a smooth curve-specific error.}
-#' 
+#'
 #' The code can handle irregularly and possibly sparsely sampled
 #' data. Of course, it can also be used to analyze regular grid data,
 #' but as it is especially designed for the irregular case and there may
@@ -60,7 +60,7 @@
 #'
 #'
 #' @param curve_info data table in which each row represents a single observation
-#' point. \code{curve_info} need to contain the following columns:
+#' point. \code{curve_info} needs to contain the following columns:
 #' \itemize{
 #' \item \code{y_vec} (numeric): the response values for each observation point
 #' \item \code{t}  (numeric): the observations point locations, i.e. \eqn{t_{ij}}
@@ -98,8 +98,8 @@
 #' @param d_grid pre-specified grid length for equidistant grid on which the mean, the auto-covariance surfaces, the eigenfunctions
 #' and the functional random effects are evaluated. NOTE: the length of the grid can be important for computation time (approx. quadratic influence).
 #' Defaults to \code{d_grid = 100}.
-#' @param min_grid         minimum value of eqidistant grid (should approx. correspond to minimum value of time interval). Defaults to \code{min_grid = 0}.
-#' @param max_grid         maximum value of eqidistant grid (should approx. correspond to maximum value of time interval). Defaults to \code{max_grid = 1}.
+#' @param min_grid         minimum value of equidistant grid (should approx. correspond to minimum value of time interval). Defaults to \code{min_grid = 0}.
+#' @param max_grid         maximum value of equidistant grid (should approx. correspond to maximum value of time interval). Defaults to \code{max_grid = 1}.
 #' @param my_grid          optional evaluation grid, which can be specified and used instead of \code{d_grid}, \code{min_grid}, \code{max_grid}.
 #' NOTE: the grid should be equidistant.
 #' @param bf_mean          basis dimension (number of basis functions) used for the functional intercept
@@ -122,7 +122,7 @@
 #' Interactions are possible for dummy-coded covariates that act as varying coefficients.
 #' @param which_interaction  symmetric matrix that specifies which interactions should be considered in case \code{covariate = TRUE} and \code{interaction = TRUE}.
 #' Entry \code{which_interaction}[k, l] specifies that the interaction between \code{covariate.k} and \code{covariate.l} is modeled (example below).
-#' NOTE: entries are reduntant, \code{which_interaction}[l, k] should be set to the
+#' NOTE: entries are redundant, \code{which_interaction}[l, k] should be set to the
 #' same as \code{which_interaction}[k, l] (symmetric). Defaults to \code{which_interaction = matrix(NA)} which should be specified when \code{interaction = FALSE}.
 #' @param save_model_mean \code{TRUE} to give out \code{gam/bam} object (attention: can be large!), defaults to \code{FALSE}.
 #' @param para_estim_mean \code{TRUE} to parallelize mean estimation (only possible using \code{bam}), defaults to \code{FALSE}.
@@ -159,7 +159,7 @@
 #' see \code{\link{bam}} for more details. Defaults to \code{FALSE}.
 #' @param para_estim_cov \code{TRUE} to parallelize auto-covariance estimation (only possible using \code{bam}), defaults to \code{FALSE}.
 #' @param para_estim_cov_nc number of cores (if \code{use_discrete_cov = FALSE}) or number of threads (if \code{use_discrete_cov = TRUE})
-#' for parallelization of auto-covariance estimation (only possible using \code{bam}, only active if \code{para_estim_cov = TRUE}). 
+#' for parallelization of auto-covariance estimation (only possible using \code{bam}, only active if \code{para_estim_cov = TRUE}).
 #' Defaults to 0.
 #' @param var_level  pre-specified level of explained variance used for the choice of the number of the functional principal
 #' components (FPCs). Alternatively, a specific number of FPCs can be specified (see below). Defaults to \code{var_level = 0.95}.
@@ -187,7 +187,7 @@
 #' @param para_estim_famm \code{TRUE} to parallelize FAMM estimation. Defaults to \code{FALSE}.
 #' @param para_estim_famm_nc  number of cores (if \code{use_discrete_famm = FALSE}) or number of
 #' threads (if \code{use_discrete_famm = TRUE})
-#' for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}). 
+#' for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}).
 #' Defaults to 0.
 #'
 #' @details The three special cases of the general FLMM (two
@@ -275,6 +275,9 @@
 #' @author Jona Cederbaum
 #'
 #' @seealso Note that \code{\link{sparseFLMM}} calls \code{\link[mgcv]{bam}} or \code{\link[mgcv]{gam}} directly.
+#' @seealso For functional linear mixed models with complex correlation structures
+#' for data sampled on equal grids based on functional principal component analysis,
+#' see function \code{denseFLMM} in package \code{denseFLMM}.
 #'
 #' @keywords models, FPCA
 #'
@@ -289,6 +292,7 @@
 #' Functional Additive Mixed Models, Journal of Computational and Graphical Statistics, 24(2), 477-501.
 #'
 #' @examples
+#' \dontrun{
 #' # subset of acoustic data (very small subset, no meaningful results can be expected and
 #' # FAMM estimation does not work for this subset example. For FAMM estimation, see below.)
 #' data("acoustic_subset")
@@ -313,7 +317,7 @@
 #'               bs_int_famm = list(bs = "ps", k = 8, m = c(2, 3)),
 #'               bs_y_famm = list(bs = "ps", k = 8, m = c(2, 3)),
 #'               save_model_famm = FALSE, use_discrete_famm = FALSE,
-#'               para_estim_famm = FALSE, para_estim_famm_nc = 0)
+#'               para_estim_famm = FALSE, para_estim_famm_nc = 0)}
 #'
 #'\dontrun{
 #'# whole data set with estimation in the FAMM framework

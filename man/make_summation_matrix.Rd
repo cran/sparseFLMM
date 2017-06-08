@@ -32,4 +32,3 @@ Submitted on arXiv.
 \seealso{
 \code{\link[mgcv]{smooth.construct}} and \code{\link[mgcv]{smoothCon}} for details on constructors
 }
-
