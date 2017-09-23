@@ -2,7 +2,7 @@ Package: sparseFLMM
 Type: Package
 Title: Functional Linear Mixed Models for Irregularly or Sparsely
         Sampled Data
-Version: 0.1.1
+Version: 0.2.0
 Author: Jona Cederbaum
 Maintainer: Jona Cederbaum <Jona.Cederbaum@stat.uni-muenchen.de>
 Description: Estimation of functional linear mixed models for irregularly or
@@ -20,6 +20,6 @@ Collate: 'call_all_functions.R' 'cov_estimation_tri.R'
         'tri_constraint_constructor.R' 'useful_functions.R' 'zzz.R'
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-06-08 19:57:53 UTC; Jona
+Packaged: 2017-09-23 15:46:13 UTC; Jona
 Repository: CRAN
-Date/Publication: 2017-06-08 20:05:25 UTC
+Date/Publication: 2017-09-23 16:10:15 UTC

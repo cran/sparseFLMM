@@ -693,7 +693,8 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
     # on upper triangle
     #######################
     if(use_tri | use_tri_constr | use_tri_constr_weights)
-      index_upperTri <- index[row_t_bivariate <= col_t_bivariate, ]
+      index_upperTri <- index[(n1 <= n2 & row_t_bivariate <= col_t_bivariate) |
+                                (n1 > n2 & row_t_bivariate < col_t_bivariate), ]
 
     #############################
     # tri: using triangle only
@@ -1065,7 +1066,7 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
 #' \item \code{covariate.1}: (order of the consonants, reference category first /s/ then /sh/).
 #' \item \code{covariate.2}: (stress of the final syllable of the first compound,
 #' reference category 'stressed').
-#' \item \code{covariate.3}: (stress of the inital syllable of the second compound,
+#' \item \code{covariate.3}: (stress of the initial syllable of the second compound,
 #' reference category 'stressed').
 #' \item \code{covariate.4}: (vowel context, reference category ia).
 #' \item \code{word_names_long}: names of the target words.

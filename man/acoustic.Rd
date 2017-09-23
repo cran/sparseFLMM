@@ -34,7 +34,7 @@ corresponding speaker and target word.
 \item \code{covariate.1}: (order of the consonants, reference category first /s/ then /sh/).
 \item \code{covariate.2}: (stress of the final syllable of the first compound,
 reference category 'stressed').
-\item \code{covariate.3}: (stress of the inital syllable of the second compound,
+\item \code{covariate.3}: (stress of the initial syllable of the second compound,
 reference category 'stressed').
 \item \code{covariate.4}: (vowel context, reference category ia).
 \item \code{word_names_long}: names of the target words.
