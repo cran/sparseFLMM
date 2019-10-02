@@ -279,7 +279,7 @@
 #' for data sampled on equal grids based on functional principal component analysis,
 #' see function \code{denseFLMM} in package \code{denseFLMM}.
 #'
-#' @keywords models, FPCA
+#' @keywords models FPCA
 #'
 #' @references
 #' Cederbaum, Pouplier, Hoole, Greven (2016): Functional Linear Mixed Models

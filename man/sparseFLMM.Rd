@@ -7,18 +7,19 @@
 sparseFLMM(curve_info, use_RI = FALSE, use_simple = FALSE,
   method = "fREML", use_bam = TRUE, bs = "ps", d_grid = 100,
   min_grid = 0, max_grid = 1, my_grid = NULL, bf_mean = 8,
-  bf_covariates = 8, m_mean = c(2, 3), covariate = FALSE, num_covariates,
-  covariate_form, interaction, which_interaction = matrix(NA),
-  save_model_mean = FALSE, para_estim_mean = FALSE,
-  para_estim_mean_nc = 0, bf_covs, m_covs, use_whole = FALSE,
-  use_tri = FALSE, use_tri_constr = TRUE, use_tri_constr_weights = FALSE,
-  np = TRUE, mp = TRUE, use_discrete_cov = FALSE,
-  para_estim_cov = FALSE, para_estim_cov_nc = 0, var_level = 0.95,
-  N_B = NA, N_C = NA, N_E = NA, use_famm = FALSE, use_bam_famm = TRUE,
-  bs_int_famm = list(bs = "ps", k = 8, m = c(2, 3)), bs_y_famm = list(bs =
-  "ps", k = 8, m = c(2, 3)), save_model_famm = FALSE,
-  use_discrete_famm = FALSE, para_estim_famm = FALSE,
-  para_estim_famm_nc = 0)
+  bf_covariates = 8, m_mean = c(2, 3), covariate = FALSE,
+  num_covariates, covariate_form, interaction,
+  which_interaction = matrix(NA), save_model_mean = FALSE,
+  para_estim_mean = FALSE, para_estim_mean_nc = 0, bf_covs, m_covs,
+  use_whole = FALSE, use_tri = FALSE, use_tri_constr = TRUE,
+  use_tri_constr_weights = FALSE, np = TRUE, mp = TRUE,
+  use_discrete_cov = FALSE, para_estim_cov = FALSE,
+  para_estim_cov_nc = 0, var_level = 0.95, N_B = NA, N_C = NA,
+  N_E = NA, use_famm = FALSE, use_bam_famm = TRUE,
+  bs_int_famm = list(bs = "ps", k = 8, m = c(2, 3)),
+  bs_y_famm = list(bs = "ps", k = 8, m = c(2, 3)),
+  save_model_famm = FALSE, use_discrete_famm = FALSE,
+  para_estim_famm = FALSE, para_estim_famm_nc = 0)
 }
 \arguments{
 \item{curve_info}{data table in which each row represents a single observation
@@ -414,4 +415,4 @@ see function \code{denseFLMM} in package \code{denseFLMM}.
 Jona Cederbaum
 }
 \keyword{FPCA}
-\keyword{models,}
+\keyword{models}
