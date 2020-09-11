@@ -4,7 +4,9 @@
 \name{acoustic_subset}
 \alias{acoustic_subset}
 \title{Phonetics acoustic data (subset)}
-\format{A data frame with 656 rows and 11 variables}
+\format{
+A data frame with 656 rows and 11 variables
+}
 \description{
 A small subset of the phonetics acoustic
 data set \code{\link[sparseFLMM]{acoustic}} with observations from two speakers and two items only.

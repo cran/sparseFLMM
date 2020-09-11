@@ -4,7 +4,9 @@
 \name{acoustic}
 \alias{acoustic}
 \title{Phonetics acoustic data (complete)}
-\format{A data frame with 24830 rows and 11 variables}
+\format{
+A data frame with 24830 rows and 11 variables
+}
 \description{
 The data are part of a large study on consonant assimilation, which is
 the phenomenon that the articulation of two consonants becomes

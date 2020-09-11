@@ -1,3 +1,7 @@
+Changes in sparseFLMM v0.3.1.tar.gz (Update date: 2020-10-11):
+* depend on higher version of refund
+
+
 Changes in sparseFLMM v0.2.2.tar.gz (Update date: 2018-03-26):
 * replace rBind and cBind by rbind and cbind as they are depricated.
 
