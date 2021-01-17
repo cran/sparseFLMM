@@ -48,7 +48,8 @@ sparseFLMM(
   save_model_famm = FALSE,
   use_discrete_famm = FALSE,
   para_estim_famm = FALSE,
-  para_estim_famm_nc = 0
+  para_estim_famm_nc = 0,
+  nested = FALSE
 )
 }
 \arguments{
@@ -67,6 +68,16 @@ For models with two crossed functional random intercepts, the data table additio
 \itemize{
 \item \code{word_long} (integer): unique identification number for each level of
 the second grouping variable (e.g. words for the phonetics data in the example below)
+\item \code{combi_long} (integer): number of the repetition of the combination of the
+corresponding level of the first and of the second grouping variable.
+}
+For models with two nested functional random intercepts, the data table
+additionally needs to have columns:
+#' \itemize{
+\item \code{word_long} (integer): unique identification number for each level
+of the second grouping variable (e.g. phases of a randomized controled
+trial). Note that the nested model is only implemented for two levels in the
+second grouping variable.
 \item \code{combi_long} (integer): number of the repetition of the combination of the
 corresponding level of the first and of the second grouping variable.
 }
@@ -225,6 +236,10 @@ see \code{\link{bam}} for more details. Defaults to \code{FALSE}.}
 threads (if \code{use_discrete_famm = TRUE})
 for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}).
 Defaults to 0.}
+
+\item{nested}{\code{TRUE} to specify a model with nested functional random
+intercepts for the first and second grouping variable and a smooth error
+curve. Defaults to \code{FALSE}.}
 }
 \value{
 The function returns a list of two elements: \code{time_all} and \code{results}. \cr
@@ -297,7 +312,7 @@ with \eqn{Y_i(t_{ij})} the value of the response of curve \eqn{i} at observation
  which is multiplied with the vector of functional random effects \eqn{U(t_{ij})}.
 \eqn{\epsilon_i(t_{ij})} is independent and identically distributed white noise
 measurement error with homoscedastic, constant variance. For more details, see references below.\cr \cr
-The current implementation can be used to fit three special cases
+The current implementation can be used to fit four special cases
 of the above general FLMM:
 \itemize{
 \item a model for independent functional data (e.g. longitudinal data),
@@ -307,7 +322,9 @@ a smooth curve-specific deviation (smooth error curve)
 functional random intercept (fRI) for one grouping variable in addition
 to a smooth curve-specific error
 \item a model for correlated functional data with two crossed
-fRIs for two grouping variables in addition to a smooth curve-specific error.}
+fRIs for two grouping variables in addition to a smooth curve-specific error
+\item a model for correlated functional data with two nested fRIs for
+two grouping variables in addition to a smooth curve-specific error.}
 }
 \details{
 The code can handle irregularly and possibly sparsely sampled
@@ -346,9 +363,17 @@ point-wise confidence bands for covariate effects (in the mean function) conditi
 Note that the estimation as FAMM may be computationally expensive as the model
 is re-estimated in a mixed model framework.
 
-The three special cases of the general FLMM (two
+The four special cases of the general FLMM (two nested fRIs, two
 crossed fRIs, one fRI, independent curves) are implemented as follows:
 \itemize{
+\item In the special case with two nested fRIs, three random processes B, C,
+and E are considered, where B is the fRI for the first grouping variable (e.
+g. patient in a random controlled trial), C denotes the fRI for the second
+grouping variable (e.g. individual specific effect in the follow-up) and E
+denotes the smooth error. For this special
+case, arguments \code{use_RI} and \code{use_simple} are both set to
+ \code{FALSE} and argument \code{nested} is set to \code{TRUE}. Note that
+this implementation only allows for a simple before/after study design.
 \item In the special case with two crossed fRIs,  three
 random processes B, C, and E are considered, where B is the
 fRI for the first grouping variable (e.g. speakers in the phonetics example below),

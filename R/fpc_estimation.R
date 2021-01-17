@@ -5,7 +5,8 @@
 # and prediction of the FPC weights.
 ##################################################################################################
 estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_level,
-                               N_B, N_C, N_E, curve_info, I, J, n, sigmasq_hat, use_RI){
+                               N_B, N_C, N_E, curve_info, I, J, n, sigmasq_hat, use_RI,
+                             nested){
 
   ##################################################
   # compute interval length of Riemann approximation
@@ -250,7 +251,12 @@ estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_
     # of basis weights
     ####################
     if(!use_RI){
-      N <- I * N_B + J * N_C + n * N_E
+      if(!nested) {
+        N <- I * N_B + J * N_C + n * N_E
+      } else {
+        N <- I * N_B + I * J * N_C + n * N_E
+      }
+
     }else{
       N <- I * N_B + n * N_E
     }
@@ -260,7 +266,11 @@ estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_
       G_B <- matrix(NA, ncol = 0, nrow = 0)
     }
     if(N_C > 0){
-      G_C <- diag(rep(nu_C_hat, times = J))
+      if(!nested) {
+        G_C <- diag(rep(nu_C_hat, times = J))
+      } else {
+        G_C <- diag(rep(nu_C_hat, times = J*I))
+      }
     }else{
       G_C <- matrix(NA, ncol = 0, nrow = 0)
     }
@@ -325,7 +335,12 @@ estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_
           }
           blocks[[i]] <- bdiag(blocks[[i]])
         }
-        phi_C_block <- do.call("rbind", blocks)
+        if(!nested){
+          phi_C_block <- do.call("rbind", blocks)
+        } else {
+          phi_C_block <- bdiag(blocks)
+        }
+
       }else{
         phi_C_block <- matrix(0, 0, 0)
       }
@@ -434,11 +449,23 @@ estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_
         xi_B_hat <- matrix(xi_all_hat[1 : (N_B * I)], ncol = N_B, byrow = T)
         row.names(xi_B_hat) <- unique(curve_info_sort$subject_long_orig)
         if(N_C > 0){
-          xi_C_hat <- matrix(xi_all_hat[(N_B * I + 1) : (N_B * I + N_C * J)], ncol = N_C, byrow = T)
-          row.names(xi_C_hat) <- unique(curve_info_sort$word_long_orig)
+          if(!nested){
+            xi_C_hat <- matrix(xi_all_hat[(N_B * I + 1) : (N_B * I + N_C * J)], ncol = N_C, byrow = T)
+            row.names(xi_C_hat) <- unique(curve_info_sort$word_long_orig)
+          } else {
+            xi_C_hat <- matrix(xi_all_hat[(N_B * I + 1) : (N_B * I + N_C * J * I)], ncol = N_C, byrow = T)
+            row.names(xi_C_hat) <- unique(paste(curve_info_sort$subject_long_orig,
+                                                curve_info_sort$word_long_orig,
+                                                sep = "."))
+          }
           if(N_E > 0){
-            xi_E_hat <- matrix(xi_all_hat[(N_B * I + N_C * J + 1) : N], ncol = N_E, byrow = T)
-            row.names(xi_E_hat) <- unique(curve_info_sort$n_long_orig)
+            if(!nested){
+              xi_E_hat <- matrix(xi_all_hat[(N_B * I + N_C * J + 1) : N], ncol = N_E, byrow = T)
+              row.names(xi_E_hat) <- unique(curve_info_sort$n_long_orig)
+            } else {
+              xi_E_hat <- matrix(xi_all_hat[(N_B * I + N_C * J * I + 1) : N], ncol = N_E, byrow = T)
+              row.names(xi_E_hat) <- unique(curve_info_sort$n_long_orig)
+            }
           }else{
             xi_E_hat <- rep(NA, n)
           }
@@ -471,7 +498,11 @@ estimate_fpc_fun <- function(cov_B, cov_C, cov_E, sigmasq_int_hat, my_grid, var_
           if(use_RI){
             xi_C_hat <- NA
           }else{
-            xi_C_hat <- rep(NA, J)
+            if(!nested) {
+              xi_C_hat <- rep(NA, J)
+            } else {
+              xi_C_hat <- rep(NA, J*I)
+            }
           }
           xi_E_hat <- matrix(xi_all_hat[1 : N], ncol = N_E, byrow = T)
           row.names(xi_E_hat) <- unique(curve_info_sort$n_long_orig)

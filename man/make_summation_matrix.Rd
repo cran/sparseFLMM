@@ -4,17 +4,25 @@
 \alias{make_summation_matrix}
 \title{Construct symmetry constraint matrix for bivariate symmetric smoothing.}
 \usage{
-make_summation_matrix(F)
+make_summation_matrix(F, skew = FALSE, cyclic.degree = 0)
 }
 \arguments{
 \item{F}{number of marginal basis functions.}
+
+\item{skew}{logical, should the basis be constraint to skew-symmetry instead
+of symmetry.}
+
+\item{cyclic.degree}{integer, specifying the number of basis functions identified
+with each other at the boundaries in order to implement periodicity. Should
+be specified to match the degree of the utilized B-spline basis.}
 }
 \value{
-A symmetry constraint matrix of dimension \eqn{F^2 x F(F+1)/2}.
+A basis transformation matrix of dimension \eqn{F^2 \times G} with
+\eqn{G<F^2} depending on the specified constraint.
 }
 \description{
 This function can be used to construct a symmetry constraint matrix that imposes
-a symmetry constraint on spline coefficients in symmetric bivariate smoothing problems and is especially
+a (skew-)symmetry constraint on (cyclic) spline coefficients in symmetric bivariate smoothing problems and is especially
 designed for constructing objects of the class "symm.smooth", see \code{\link[sparseFLMM]{smooth.construct.symm.smooth.spec}}.
 }
 \details{
@@ -31,4 +39,7 @@ Submitted on arXiv.
 }
 \seealso{
 \code{\link[mgcv]{smooth.construct}} and \code{\link[mgcv]{smoothCon}} for details on constructors
+}
+\author{
+Jona Cederbaum, Almond Stoecker
 }

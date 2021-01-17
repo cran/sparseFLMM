@@ -1,3 +1,8 @@
+Changes in sparseFLMM v0.4.0.tar.gz (Update date: 2021-01-17):
+* add option to allow for nested model structure
+* add option to allow skew-symmetric and cylcic smooths
+
+
 Changes in sparseFLMM v0.3.1.tar.gz (Update date: 2020-10-11):
 * depend on higher version of refund
 

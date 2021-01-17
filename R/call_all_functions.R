@@ -10,7 +10,7 @@
 #'  which is multiplied with the vector of functional random effects \eqn{U(t_{ij})}.
 #' \eqn{\epsilon_i(t_{ij})} is independent and identically distributed white noise
 #' measurement error with homoscedastic, constant variance. For more details, see references below.\cr \cr
-#' The current implementation can be used to fit three special cases
+#' The current implementation can be used to fit four special cases
 #' of the above general FLMM:
 #' \itemize{
 #' \item a model for independent functional data (e.g. longitudinal data),
@@ -20,7 +20,9 @@
 #' functional random intercept (fRI) for one grouping variable in addition
 #' to a smooth curve-specific error
 #' \item a model for correlated functional data with two crossed
-#' fRIs for two grouping variables in addition to a smooth curve-specific error.}
+#' fRIs for two grouping variables in addition to a smooth curve-specific error
+#' \item a model for correlated functional data with two nested fRIs for
+#' two grouping variables in addition to a smooth curve-specific error.}
 #'
 #' The code can handle irregularly and possibly sparsely sampled
 #' data. Of course, it can also be used to analyze regular grid data,
@@ -74,6 +76,16 @@
 #' \itemize{
 #' \item \code{word_long} (integer): unique identification number for each level of
 #' the second grouping variable (e.g. words for the phonetics data in the example below)
+#' \item \code{combi_long} (integer): number of the repetition of the combination of the
+#' corresponding level of the first and of the second grouping variable.
+#' }
+#' For models with two nested functional random intercepts, the data table
+#' additionally needs to have columns:
+#' #' \itemize{
+#' \item \code{word_long} (integer): unique identification number for each level
+#' of the second grouping variable (e.g. phases of a randomized controled
+#' trial). Note that the nested model is only implemented for two levels in the
+#' second grouping variable.
 #' \item \code{combi_long} (integer): number of the repetition of the combination of the
 #' corresponding level of the first and of the second grouping variable.
 #' }
@@ -189,10 +201,21 @@
 #' threads (if \code{use_discrete_famm = TRUE})
 #' for parallelization of FAMM estimation (only possible using \code{bam}, only active if \code{para_estim_famm = TRUE}).
 #' Defaults to 0.
+#' @param nested \code{TRUE} to specify a model with nested functional random
+#' intercepts for the first and second grouping variable and a smooth error
+#' curve. Defaults to \code{FALSE}.
 #'
-#' @details The three special cases of the general FLMM (two
+#' @details The four special cases of the general FLMM (two nested fRIs, two
 #' crossed fRIs, one fRI, independent curves) are implemented as follows:
 #' \itemize{
+#' \item In the special case with two nested fRIs, three random processes B, C,
+#' and E are considered, where B is the fRI for the first grouping variable (e.
+#' g. patient in a random controlled trial), C denotes the fRI for the second
+#' grouping variable (e.g. individual specific effect in the follow-up) and E
+#' denotes the smooth error. For this special
+#' case, arguments \code{use_RI} and \code{use_simple} are both set to
+#'  \code{FALSE} and argument \code{nested} is set to \code{TRUE}. Note that
+#' this implementation only allows for a simple before/after study design.
 #' \item In the special case with two crossed fRIs,  three
 #' random processes B, C, and E are considered, where B is the
 #' fRI for the first grouping variable (e.g. speakers in the phonetics example below),
@@ -354,7 +377,8 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
                                use_bam = TRUE, bs = "ps", d_grid = 100, min_grid = 0,
                                max_grid = 1, my_grid = NULL, bf_mean = 8,
                                bf_covariates = 8, m_mean = c(2,3), covariate = FALSE,
-                               num_covariates, covariate_form, interaction, which_interaction = matrix(NA),
+                               num_covariates, covariate_form, interaction,
+                               which_interaction = matrix(NA),
                                save_model_mean = FALSE, para_estim_mean = FALSE, para_estim_mean_nc = 0,
                                bf_covs, m_covs, use_whole = FALSE, use_tri = FALSE, use_tri_constr = TRUE,
                                use_tri_constr_weights = FALSE, np = TRUE, mp = TRUE,
@@ -366,7 +390,8 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
                                bs_int_famm = list(bs = "ps", k = 8, m = c(2, 3)),
                                bs_y_famm = list(bs = "ps", k = 8, m = c(2, 3)),
                                save_model_famm = FALSE, use_discrete_famm = FALSE,
-                               para_estim_famm = FALSE, para_estim_famm_nc = 0){
+                               para_estim_famm = FALSE, para_estim_famm_nc = 0,
+                               nested = FALSE){
 
   ##############################################################################
   # preparations
@@ -539,6 +564,13 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
     warning("Caution: using the discrete option 'use_discrete_famm' together with estimating smooth effects of covariates may
             (currently) result in unexpected results which has not been clarified yet. It is thus recommended
             to avoid this combination. For more details, see https://github.com/refunders/refund/issues/70")
+
+  if(nested & (use_RI | use_simple))
+    stop("nested functional random intercepts only for two grouping variables possible")
+
+  if(nested & !use_tri_constr)
+    stop("nested functional radom intercepts only for auto-covariance surface
+         with symmetry constraint implemented")
 
   ###################
   # initialize output
@@ -720,18 +752,45 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
     # with our symmetry constraint
     #################################
     if(use_tri_constr){
-      cat("covariance estimation tri constraint", "; time: ", format(Sys.time(), "%a %b %d %X"), "\n", sep = "")
-      res[["time_cov_tri_constr"]] <-
-        system.time(res[["cov_hat_tri_constr"]] <-
-                      estimate_cov_tri_constr_fun(index_upperTri = index_upperTri, bf = bf_covs, method = method,
-                                                  grid_col = grid_col, grid_row = grid_row, d_grid = d_grid,
-                                                  bs = bs, m = m_covs, use_bam = use_bam, t = t, same_subject_grid = same_subject_grid,
-                                                  same_word_grid = same_word_grid, same_curve_grid = same_curve_grid,
-                                                  same_point_grid = same_point_grid,
-                                                  mp = mp, para_estim = para_estim_cov, para_estim_nc = para_estim_cov_nc,
-                                                  use_RI = use_RI, weights = NULL, use_simple = use_simple, np = np,
-                                                  use_discrete = use_discrete_cov))
-    }
+      if(!nested){
+        cat("covariance estimation tri constraint", "; time: ", format(Sys.time(), "%a %b %d %X"), "\n", sep = "")
+        res[["time_cov_tri_constr"]] <-
+          system.time(res[["cov_hat_tri_constr"]] <-
+                        estimate_cov_tri_constr_fun(index_upperTri = index_upperTri, bf = bf_covs, method = method,
+                                                    grid_col = grid_col, grid_row = grid_row, d_grid = d_grid,
+                                                    bs = bs, m = m_covs, use_bam = use_bam, t = t, same_subject_grid = same_subject_grid,
+                                                    same_word_grid = same_word_grid, same_curve_grid = same_curve_grid,
+                                                    same_point_grid = same_point_grid,
+                                                    mp = mp, para_estim = para_estim_cov, para_estim_nc = para_estim_cov_nc,
+                                                    use_RI = use_RI, weights = NULL, use_simple = use_simple, np = np,
+                                                    use_discrete = use_discrete_cov))
+      } else {
+        cat("covariance estimation tri constraint", "; time: ", format(Sys.time(), "%a %b %d %X"), "\n", sep = "")
+        res[["time_cov_tri_constr"]] <-
+          system.time(res[["cov_hat_tri_constr"]] <-
+            estimate_cov_tri_constr_nest_fun(index_upperTri = index_upperTri,
+                                             bf = bf_covs,
+                                             method = method,
+                                             grid_col = grid_col,
+                                             grid_row = grid_row,
+                                             d_grid = d_grid,
+                                             bs = bs,
+                                             m = m_covs,
+                                             use_bam = use_bam,
+                                             t = t,
+                                             same_subject_grid = same_subject_grid,
+                                             same_word_grid = same_word_grid,
+                                             same_curve_grid = same_curve_grid,
+                                             same_point_grid = same_point_grid,
+                                             mp = mp,
+                                             para_estim = para_estim_cov,
+                                             para_estim_nc = para_estim_cov_nc,
+                                             weights = NULL,
+                                             np = np,
+                                             use_discrete = use_discrete_cov))
+
+
+    }}
 
     ###################################################
     # tri constr weights: using triangle only
@@ -852,7 +911,8 @@ sparseFLMM <- function(curve_info, use_RI = FALSE, use_simple = FALSE, method = 
                                          var_level = var_level, N_B = N_B, N_C = N_C, N_E = N_E,
                                          curve_info = curve_info, I = I, J = J, n = n,
                                          sigmasq_hat = res[["cov_hat_tri_constr"]][["sigmasq"]],
-                                         use_RI = use_RI))
+                                         use_RI = use_RI,
+                                         nested = nested))
       }else{
         res[["fpc_hat_tri_constr"]] <- NA
       }
