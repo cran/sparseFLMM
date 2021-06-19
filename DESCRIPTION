@@ -2,7 +2,7 @@ Package: sparseFLMM
 Type: Package
 Title: Functional Linear Mixed Models for Irregularly or Sparsely
         Sampled Data
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: c(person("Jona", "Cederbaum", email = "Jona.Cederbaum@gmail.com",
                   role = c("aut", "cre")), 
                   person("Alexander", "Volkmann", role = c("aut")), 
@@ -24,9 +24,9 @@ Collate: 'call_all_functions.R' 'cov_estimation_tri.R'
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2021-01-17 16:29:17 UTC; Jona
+Packaged: 2021-06-19 08:37:32 UTC; Jona
 Repository: CRAN
-Date/Publication: 2021-01-17 17:10:02 UTC
+Date/Publication: 2021-06-19 09:10:02 UTC
 Author: Jona Cederbaum [aut, cre],
   Alexander Volkmann [aut],
   Almond Stöcker [aut]

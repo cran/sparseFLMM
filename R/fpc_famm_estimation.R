@@ -305,7 +305,7 @@ estimate_fpc_famm_fun <- function(curve_info, my_grid, phi_B_hat_grid, phi_C_hat
           pred3 <- coef(famm_estim, n2 = length(my_grid))$smterms[[3]]$coef
         }
       }else{
-        pred3 <- coef(famm_estim, n2 = length(my_grid))$smterms[[2]]$coef
+        pred3 <- coef(famm_estim, n2 = length(my_grid))$smterms[[3]]$coef
       }
       pred3_sorted <- cbind(pred3[order(pred3$id_n.vec), c("id_n.vec", "value")],
                             use = rep(1:length(my_grid), times = length(unique(curve_info$n_long))))

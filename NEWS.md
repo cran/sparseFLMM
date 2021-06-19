@@ -1,3 +1,6 @@
+Changes in sparseFLMM v0.4.1.tar.gz 
+* fix bug in computation of FPCs using FAMM approach when N_B is zero
+
 Changes in sparseFLMM v0.4.0.tar.gz (Update date: 2021-01-17):
 * add option to allow for nested model structure
 * add option to allow skew-symmetric and cylcic smooths
