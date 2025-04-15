@@ -1,7 +1,7 @@
-ab221b4027480174dc72a3a4da7d755a *DESCRIPTION
+729608dd050450c9ae2c54ecccc836c2 *DESCRIPTION
 3ee9371179057e98d0d24620a4491ad0 *NAMESPACE
-e729b34d89209f8034fd453321c9cb88 *NEWS.md
-0731a603c02efc034921532ca086c118 *R/call_all_functions.R
+16ec9688ff74d6a7f9f2fb0cc61d59bc *NEWS.md
+043fa3d8d157e8cd1e953386ed00029e *R/call_all_functions.R
 aa1c75d9664ea625df1e2ff358825ac7 *R/cov_estimation_tri.R
 e351fd027b102fb01cf759dd4017412e *R/cov_estimation_tri_constr.R
 b4a5b89511fe9f7ea2f51cd331c4a391 *R/cov_estimation_tri_constr_nest.R
@@ -20,5 +20,5 @@ e536d72090f8f789e4795fb7caee38d5 *man/Predict.matrix.symm.smooth.Rd
 2dbd5df1aff3e01a962ea47166b76894 *man/acoustic_subset.Rd
 9ea0eab1f099924b1ae52cd668feb14b *man/make_summation_matrix.Rd
 ea5729331934ae90457bcaff4c0fb3ed *man/smooth.construct.symm.smooth.spec.Rd
-9342800f327af633af2f9549f30efdad *man/sparseFLMM.Rd
+e46519a668c4bf85041fb58b8f6bdac0 *man/sparseFLMM.Rd
 936e4af9cda4f83af4d458ac8feed262 *tests/smooth.construct.symm.smooth.spec_example.R

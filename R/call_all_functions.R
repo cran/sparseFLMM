@@ -99,12 +99,12 @@
 #' first and second grouping variable and a smooth error curve.
 #' @param use_simple \code{TRUE} to specify a model with only a smooth random error function,
 #' \code{use_RI} should then also be set to \code{TRUE}. Defaults to \code{FALSE}.
-#' @param method estimation method for \code{gam} or \code{bam}, see \code{\link{mgcv}} for more details.
+#' @param method estimation method for \code{gam} or \code{bam}, see \code{\link[mgcv]{mgcv}} for more details.
 #' Defaults to \code{"fREML"}.
 #' @param use_bam \code{TRUE} to use function bam instead of function \code{gam} (syntax is the same, bam is faster for large data sets).
 #' \code{bam} is recommended and set as default.
 #' @param bs spline basis function type for the estimation of the mean function and
-#' the auto-covariance, see \code{\link{s}} and \code{\link{te}} for more details.
+#' the auto-covariance, see \code{\link[mgcv]{s}} and \code{\link[mgcv]{te}} for more details.
 #' Defaults to penalized B-splines, i.e. \code{bs = "ps"}. This choice is recommended as others have not been
 #' tested yet.
 #' @param d_grid pre-specified grid length for equidistant grid on which the mean, the auto-covariance surfaces, the eigenfunctions
@@ -120,7 +120,7 @@
 #' of covariates in the mean estimation via \code{bam/gam}. Defaults to \code{bf_covariates = 8}.
 #' NOTE: in the current implementation, the same basis dimension for all covariates is used.
 #' @param m_mean           order of the penalty for this term in \code{bam/gam} of mean estimation, for \code{bs = "ps"} spline and penalty order,
-#' defaults to \code{m_mean = c(2, 3)}, i.e., cubic B-splines with third order difference penalty, see \code{\link{s}} for details.
+#' defaults to \code{m_mean = c(2, 3)}, i.e., cubic B-splines with third order difference penalty, see \code{\link[mgcv]{s}} for details.
 #' @param covariate        \code{TRUE} to estimate covariate effects (as part of the mean function).
 #' @param num_covariates   number of covariates that are included in the model.
 #' NOTE: not number of effects in case interactions of covariates are specified.
@@ -160,15 +160,15 @@
 #' @param use_tri_constr_weights \code{TRUE} to estimate only the upper triangle of the auto-covariances with symmetry constraint, using the
 #' smooth class \code{'symm'} and weights of 0.5 on the diagonal to use the same weights as for estimating the whole auto-covariance surfaces.
 #' Defaults to \code{FALSE}. For more details, see references below.
-#' @param np \code{TRUE} to use 'normal parameterization' for a tensor product smooth, see \code{\link{te}} for more details.
+#' @param np \code{TRUE} to use 'normal parameterization' for a tensor product smooth, see \code{\link[mgcv]{te}} for more details.
 #' Defaults to \code{TRUE}.
 #' @param mp \code{FALSE} to use Kronecker product penalty instead of Kronecker sum penalty
-#' with only one smoothing parameter (\code{use_whole = TRUE} and \code{use_tri = TRUE}), for details see \code{\link{te}}.
+#' with only one smoothing parameter (\code{use_whole = TRUE} and \code{use_tri = TRUE}), for details see \code{\link[mgcv]{te}}.
 #' For \code{use_tri_constr = TRUE} and \code{use_tri_constr_weights = TRUE}, only one smoothing parameter is estimated anyway.
 #' Defaults to \code{TRUE}.
 #' @param use_discrete_cov \code{TRUE} to further speed up the auto-covariance computation by discretization of
 #' covariates for storage and efficiency reasons, includes parallelization controlled by \code{para_estim_cov_nc} (below),
-#' see \code{\link{bam}} for more details. Defaults to \code{FALSE}.
+#' see \code{\link[mgcv]{bam}} for more details. Defaults to \code{FALSE}.
 #' @param para_estim_cov \code{TRUE} to parallelize auto-covariance estimation (only possible using \code{bam}), defaults to \code{FALSE}.
 #' @param para_estim_cov_nc number of cores (if \code{use_discrete_cov = FALSE}) or number of threads (if \code{use_discrete_cov = TRUE})
 #' for parallelization of auto-covariance estimation (only possible using \code{bam}, only active if \code{para_estim_cov = TRUE}).
@@ -185,17 +185,17 @@
 #' (reduces computation time for large data sets),
 #' highly recommended. Defaults to \code{TRUE}.
 #' @param bs_int_famm  specification of the estimation of the functional intercept \eqn{f_0(t_{ij})}
-#' (as part of the mean function), see \code{\link{pffr}} for details.
+#' (as part of the mean function), see \code{\link[refund]{pffr}} for details.
 #' Defaults to \code{bs_int = list(bs = "ps", k = 8, m = c(2, 3))}, where
 #' \code{bs}: type of basis functions, \code{k}: number of basis functions, \code{m}: order of the spline and order of the penalty.
-#' @param bs_y_famm  specification of the estimation of the covariates effects (as part of the mean function), see \code{\link{pffr}} for details.
+#' @param bs_y_famm  specification of the estimation of the covariates effects (as part of the mean function), see \code{\link[refund]{pffr}} for details.
 #' Defaults to \code{bs_y_famm = list(bs = "ps", k = 8, m = c(2, 3))}, where
 #' \code{bs}: type of basis functions, \code{k}: number of basis functions, \code{m}: order of the spline and order of the penalty.
 #' @param save_model_famm  \code{TRUE} to give out the FAMM model object (attention: can be very large!).
 #' Defaults to FALSE.
 #' @param use_discrete_famm  \code{TRUE} to further speed up the fpc-famm computation by discretization of
 #' # covariates for storage and efficiency reasons, includes parallelization controlled by \code{para_estim_famm_nc} (below),
-#' see \code{\link{bam}} for more details. Defaults to \code{FALSE}.
+#' see \code{\link[mgcv]{bam}} for more details. Defaults to \code{FALSE}.
 #' @param para_estim_famm \code{TRUE} to parallelize FAMM estimation. Defaults to \code{FALSE}.
 #' @param para_estim_famm_nc  number of cores (if \code{use_discrete_famm = FALSE}) or number of
 #' threads (if \code{use_discrete_famm = TRUE})
@@ -297,7 +297,7 @@
 #'
 #' @author Jona Cederbaum
 #'
-#' @seealso Note that \code{\link{sparseFLMM}} calls \code{\link[mgcv]{bam}} or \code{\link[mgcv]{gam}} directly.
+#' @seealso Note that \code{\link[sparseFLMM]{sparseFLMM}} calls \code{\link[mgcv]{bam}} or \code{\link[mgcv]{gam}} directly.
 #' @seealso For functional linear mixed models with complex correlation structures
 #' for data sampled on equal grids based on functional principal component analysis,
 #' see function \code{denseFLMM} in package \code{denseFLMM}.
